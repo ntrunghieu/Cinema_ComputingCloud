@@ -1,0 +1,32 @@
+<app-header></app-header>
+<div class="container" style="margin-top: 100px;">
+    <h2 style="margin-left: 30px;">Chi Tiết Phim</h2>
+    <div class="movie-detail" style="display: flex; align-items: flex-start;">
+        <div class="movie-image" style="display: flex; flex-direction: column; align-items: center; margin-right: 50px;">
+            <img src="{{phim.anh}}" alt="Poster Phim" style="width: 260px;">
+            <button class="btn btn-danger btn-block"  >
+                <a class="nav-link" [routerLink]="['/schedule',phim.id]">Mua vé</a>
+            </button>
+        </div>
+        <table class="movie-info" style="width: 100%; margin-top: 20px; border-spacing: 10px;">
+            <tr><th>Tên Phim:</th><td>{{phim.tenPhim}}</td></tr>
+            <tr><th>Đạo diễn:</th><td>{{phim.daoDien}}</td></tr>
+            <tr><th>Diễn Viên:</th><td>{{phim.dienVien}}</td></tr>
+            <tr><th>Ngày Khởi Chiếu:</th><td>{{ phim.ngayPhatHanh | date: 'dd/MM/yyyy' }}</td></tr>
+            <tr><th>Thời Lượng:</th><td>{{phim.tenPhim}} phút</td></tr>
+            <tr><th>Quốc gia:</th><td>{{phim.quocGia}}</td></tr>
+            <tr><th>Độ tuổi:</th><td>{{phim.gioiHanTuoi?.moTa}}</td></tr>
+        </table>
+    </div>
+    <div class="trailer-intro" style="display: flex; align-items: flex-start;">
+        <div class="trailer" style="margin: 25px;">
+            <h2>Trailer</h2>
+            <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/EXhamQsxNqU?si=OXtf4pQ05cps7RNg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+            <iframe width="560" height="315" *ngIf="safeUrl" [src]="safeUrl" allowfullscreen></iframe>
+        </div>
+        <div class="intro" style="margin-left: 100px;">
+            <h1>Giới Thiệu:</h1>
+            <p>{{phim.moTa}}</p>
+        </div>
+    </div>
+</div>

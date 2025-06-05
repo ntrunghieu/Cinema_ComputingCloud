@@ -1,0 +1,175 @@
+<app-header></app-header>
+<div class="container mx-auto px-4 py-8" style="margin-top: 110px; ">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold" style="margin-bottom: 20px;">Quản lý phim</h1>
+    <button (click)="openAddForm()" style="background-color: #4299e1;" class=" text-white px-4 py-2 rounded-lg">
+      <i class="fas fa-plus mr-2"></i>Thêm phim mới
+    </button>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+
+  <!-- Modal Backdrop -->
+  <div *ngIf="showForm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <!-- Modal Content -->
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 m-4">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">{{isEditing ? 'Chỉnh sửa phim' : 'Thêm phim mới'}}</h2>
+        <button type="button" (click)="cancelEdit()" class="text-gray-400 hover:text-gray-500">
+          <i class="fas fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <form (ngSubmit)="saveMovie()" #movieForm="ngForm" class="space-y-6">
+        <!-- Basic Information -->
+        <div class="bg-gray-50 p-4 rounded-lg">
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Tên phim</label>
+              <input type="text" [(ngModel)]="newMovie.tenPhim" name="tenPhim" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Thời lượng (phút)</label>
+              <input type="number" [(ngModel)]="newMovie.thoiLuong" name="thoiLuong" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Ngày phát hành</label>
+              <input type="date" [(ngModel)]="newMovie.ngayPhatHanh" name="ngayPhatHanh" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Trạng thái</label>
+              <select [(ngModel)]="newMovie.trangThai" name="trangThai" required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <option value="Sắp chiếu">Sắp chiếu</option>
+                <option value="Đang chiếu">Đang chiếu</option>
+                <option value="Đã chiếu">Đã chiếu</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Đạo diễn</label>
+              <input type="text" [(ngModel)]="newMovie.daoDien" name="daoDien"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Diễn viên</label>
+              <input type="text" [(ngModel)]="newMovie.dienVien" name="dienVien"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Quốc gia</label>
+              <input type="text" [(ngModel)]="newMovie.quocGia" name="quocGia"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Ảnh poster</label>
+              <input type="file" (change)="onFileSelected($event)" accept="image/*"  #fileInput [(ngModel)]="newMovie.anh" name="anh"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                <!-- <div *ngIf="newMovie.anh && !fileInput?.nativeElement?.files?.length">
+                  <span>{{ getFileName(newMovie.anh) }}</span> 
+                </div> -->
+              </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700">URL trailer</label>
+              <input type="url" [(ngModel)]="newMovie.trailer" name="trailer"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Mô tả</label>
+              <textarea [(ngModel)]="newMovie.moTa" name="moTa" rows="4"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+
+        <!-- Form Actions -->
+        <div class="flex justify-end space-x-3 pt-4 border-t">
+          <button type="button" (click)="cancelEdit()"
+            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+            <i class="fas fa-times mr-2"></i>Hủy
+          </button>
+          <button style="background-color: #4299e1;" type="submit" [disabled]="!movieForm.form.valid"
+            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white disabled:opacity-50">
+            <i class="fas fa-save mr-2"></i>{{isEditing ? 'Cập nhật' : 'Thêm mới'}}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Movie Table -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ">Ảnh</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên phim</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thông tin</th>
+            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thời lượng</th>
+            <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+            <th class="px-4 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr *ngFor="let movie of movies" class="hover:bg-gray-50">
+            <td class="px-4 py-2">
+              <img [src]="movie.anh || 'assets/placeholder.jpg'" 
+                   [alt]="movie.tenPhim"
+                   class=" object-cover rounded mx-auto" style="width: 40%;" />
+            </td>          
+            <td class="px-4 py-2">
+              <div class="font-medium text-gray-900">{{movie.tenPhim}}</div>
+              <div class="text-xs text-gray-500">Mã phim: {{movie.maPhim}}</div>
+            </td>
+            <td class="px-4 py-2">
+              <div class="text-xs text-gray-500">Đạo diễn: {{movie.daoDien}}</div>
+              <div class="text-xs text-gray-500">Diễn viên: {{movie.dienVien}}</div>
+              <div class="text-xs text-gray-500">Quốc gia: {{movie.quocGia}}</div>
+            </td>
+            <td class="px-4 py-2">
+              <div class="text-sm">{{movie.thoiLuong}} phút</div>
+              <div class="text-xs text-gray-500">{{movie.ngayPhatHanh | date:'dd/MM/yyyy'}}</div>
+            </td>
+            <td class="px-4 py-2 text-center">
+              <span [ngClass]="{
+                'px-2 py-1 text-xs font-medium rounded-full': true,
+                'bg-yellow-100 text-yellow-800': movie.trangThai === 'Sắp chiếu',
+                'bg-green-100 text-green-800': movie.trangThai === 'Đang chiếu',
+                'bg-gray-100 text-gray-800': movie.trangThai === 'Đã chiếu'
+              }">
+                {{movie.trangThai}}
+              </span>
+            </td>
+            <td class="px-4 py-2 text-center">
+              <button (click)="openEditForm(movie)" 
+                class="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 mr-2">
+                <i class="fas fa-edit mr-1"></i> Sửa
+              </button>
+              <button (click)="deleteMovie(movie.id)" 
+                class="inline-flex items-center px-2 py-1 bg-red-100 text-red-700 rounded-md hover:bg-red-200">
+                <i class="fas fa-trash mr-1"></i> Xóa
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

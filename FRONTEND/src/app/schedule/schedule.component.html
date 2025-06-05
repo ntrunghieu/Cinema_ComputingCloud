@@ -1,0 +1,85 @@
+<app-header></app-header>
+<div class="container-lich-chieu" style="margin-top: 50px;">
+    <h2 style="color: #ff5400; border-bottom: 1px solid; padding: 25px 15px; line-height: 20px">Lịch Chiếu</h2>
+    <div class="schedule-month" style="font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: black;
+    padding-left: 15px;">Chọn lịch chiếu</div>
+    <div class="schedule-month">Tháng 4</div>
+
+<!-- Chọn ngày chiếu -->
+<div class="date-picker">
+  <div class="date-item active">Thứ 3<br>01</div>
+  <div class="date-item ">Thứ 4<br>02</div>
+  <div class="date-item">Thứ 5<br>03</div>
+  <div class="date-item">Thứ 6<br>04</div>
+  <div class="date-item">Thứ 7<br>05</div>
+  <div class="date-item">CN<br>07</div>
+  <div class="date-item">Thứ 2<br>07</div>
+</div>
+
+<!-- Chọn lịch chiếu -->
+<div class="schedule-container">
+  <div *ngFor="let item of groupedLichChieu" class="movie-block">
+    <!-- Poster -->
+    <div class="movie-poster">
+      <img [src]="item.phim.anh" alt="Poster">
+    </div>
+
+    <!-- Thông tin phim -->
+    <div class="movie-info">
+      <div class="movie-title">
+        {{ item.phim.tenPhim }} ({{ item.phim.gioiHanTuoi?.maGioiHan }})
+      </div>
+
+      <!-- Các suất chiếu -->
+      <div class="movie-sessions">
+        <div class="session" *ngFor="let suat of item.suatChieu" [routerLink]="['/seat', suat.id, suat.phong.id, suat.phim.id]" style="cursor: pointer;">
+          {{ suat.gioBatDau.slice(0, 5) }} - {{ suat.gioKetThuc.slice(0, 5) }}
+          <span class="room">{{ suat.phong.tenPhong }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 1. Phim -->
+  <!-- <div *ngFor="let lichChieu of lichChieuList" class="movie-block"> -->
+    <!-- <div class="movie-poster">
+      <img src="{{lichChieu.phim.anh}}" alt="Poster 1">
+    </div> -->
+    <!-- Thông tin phim và các suất chiếu -->
+    <!-- <div class="movie-info">
+      <div class="movie-title">{{lichChieu.phim.tenPhim}}  ({{lichChieu.phim.gioiHanTuoi?.maGioiHan}})</div>
+      <div  class="movie-sessions">
+        <div class="session">
+          {{lichChieu.gioBatDau.slice(0, 5)}} - {{lichChieu.gioKetThuc.slice(0, 5)}}
+          <span class="room">{{lichChieu.phong.tenPhong}}</span>
+        </div>
+        
+      </div>
+    </div>
+  </div> -->
+  <!-- 2. Phim -->
+  <!-- <div class="movie-block">
+    <div class="movie-poster">
+      <img src="../../assets/1.jpg" alt="Poster 2">
+    </div>
+    <div class="movie-info">
+      <div class="movie-title">MƯA TRÊN CÁNH BƯỚM (T16)</div>
+      <div class="movie-sessions">
+        <div class="session">
+          <a class="nav-link" routerLink="/seat" >  
+            11:15 - 13:00
+            <span class="room">Phòng chiếu 02</span>
+          </a>
+        </div>
+        <div class="session">
+          19:30 - 21:40
+          <span class="room">Phòng chiếu 03</span>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- ... Thêm các khối movie-block khác nếu cần ... -->
+</div>
+</div>

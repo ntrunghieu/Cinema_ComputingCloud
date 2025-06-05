@@ -1,0 +1,38 @@
+<app-header></app-header>
+<div class="container mx-auto px-4 py-8" style="margin-top: 100px;">
+  <h1 class="text-3xl font-bold mb-6">Lịch sử mua vé</h1>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="flex justify-center items-center h-64">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+
+  <!-- No history message -->
+  <div *ngIf="!isLoading && ticketHistory.length === 0" class="text-center py-8">
+    <p class="text-gray-600">Bạn chưa có lịch sử mua vé nào.</p>
+  </div>
+
+  <!-- Ticket history list -->
+  <div *ngIf="!isLoading && ticketHistory.length > 0" class="grid gap-6">
+    <div *ngFor="let ticket of ticketHistory" class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+      <div class="flex justify-between items-start">
+        <div>
+          <h2 class="text-xl font-semibold text-gray-800">{{ticket.movieTitle}}</h2>
+          <p class="text-gray-600 mt-2">
+            <span class="font-medium">Phòng:</span> {{ticket.roomName}}
+          </p>
+          <p class="text-gray-600">
+            <span class="font-medium">Suất chiếu:</span> {{ticket.showtime}}
+          </p>
+          <p class="text-gray-600">
+            <span class="font-medium">Ghế:</span> {{ticket.seats.join(', ')}}
+          </p>
+        </div>
+        <div class="text-right">
+          <p class="text-lg font-bold text-blue-600">{{ticket.totalAmount | number:'1.0-0'}} VND</p>
+          <p class="text-sm text-gray-500 mt-1">{{ticket.purchaseDate | date:'dd/MM/yyyy HH:mm'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

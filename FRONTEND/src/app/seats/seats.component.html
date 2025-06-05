@@ -1,0 +1,134 @@
+<app-header></app-header>
+<h1 style="margin-top: 100px;">Đặt vé - Chọn ghế</h1>
+      <div class="container">
+        <div class="content-wrapper">
+          <!-- Thông tin phim bên trái -->
+          <div class="movie-info">
+            <div *ngIf="!seatInfo" class="loading">Đang tải thông tin...</div>
+            <div *ngIf="seatInfo">
+              <img src="{{seatInfo.anhPoster}}" alt="Poster">
+              <h3>Phim: {{seatInfo.tenPhim}}</h3>
+              <p><strong>Ngày: </strong> {{seatInfo.ngayChieu | date: 'dd/MM/yyyy'}}</p>
+              <p><strong>Thời gian:</strong> {{seatInfo.gioBatDau.slice(0, 5)}} - {{seatInfo.gioKetThuc.slice(0, 5)}}</p>
+              <p><strong>Phòng:</strong> {{seatInfo.phong}}</p>
+              <!-- <button class="btn-change-showtime">Đổi suất chiếu</button> -->
+            </div>
+          </div>
+
+          <!-- Sơ đồ ghế ở giữa -->
+          <div class="seat-map-container">
+            <div class="screen">MÀN HÌNH</div>
+            <!-- Bảng ghế -->
+            <table class="seat-map" id="seatMap">
+              <tbody>
+                <!-- Hàng A -->
+                <tr>
+                  <th>A</th>
+                  <td *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+                      [class]="seatInfo?.danhSachGheDaDat?.includes('A' + i) ? 'booked' : 'available'" 
+                      [attr.data-seat]="'A' + i"
+                      (click)="toggleSeatSelection('A' + i, $event)">
+                      A{{i}}
+                  </td>
+                </tr>
+                <!-- Hàng B -->
+                <tr>
+                  <th>B</th>
+                  <td *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+                      [class]="seatInfo?.danhSachGheDaDat?.includes('B' + i) ? 'booked' : 'available'" 
+                      [attr.data-seat]="'B' + i"
+                      (click)="toggleSeatSelection('B' + i, $event)">
+                      B{{i}}
+                  </td>
+                </tr>
+                <!-- Hàng C -->
+                <tr>
+                  <th>C</th>
+                  <td *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+                      [class]="seatInfo?.danhSachGheDaDat?.includes('C' + i) ? 'booked' : 'available'" 
+                      [attr.data-seat]="'C' + i"
+                      (click)="toggleSeatSelection('C' + i, $event)">
+                      C{{i}}
+                  </td>
+                </tr>
+                <!-- Hàng D -->
+                <tr>
+                  <th>D</th>
+                  <td *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+                      [class]="seatInfo?.danhSachGheDaDat?.includes('D' + i) ? 'booked' : 'available'" 
+                      [attr.data-seat]="'D' + i"
+                      (click)="toggleSeatSelection('D' + i, $event)">
+                      D{{i}}
+                  </td>
+                </tr>
+                <!-- Hàng E -->
+                <tr>
+                  <th>E</th>
+                  <td *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+                      [class]="seatInfo?.danhSachGheDaDat?.includes('E' + i) ? 'booked' : 'available'" 
+                      [attr.data-seat]="'E' + i"
+                      (click)="toggleSeatSelection('E' + i, $event)">
+                      E{{i}}
+                  </td>
+                </tr>
+                <!-- Hàng F -->
+                <tr>
+                  <th>F</th>
+                  <td *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13]" 
+                      [class]="seatInfo?.danhSachGheDaDat?.includes('F' + i) ? 'booked' : 'available'" 
+                      [attr.data-seat]="'F' + i"
+                      (click)="toggleSeatSelection('F' + i, $event)">
+                      F{{i}}
+                  </td>
+                </tr>
+                <!-- Hàng G: Mỗi ô ghế được gộp thành 2 ghế thường, dùng colspan="2" -->
+                <tr>
+                  <th>G</th>
+                  <td class="couple" [class.booked]="bookedSeats.includes('G1')" data-seat="G1" colspan="2" (click)="toggleSeatSelection('G1', $event)">G1</td>
+                  <td class="couple" [class.booked]="bookedSeats.includes('G2')" data-seat="G2" colspan="2" (click)="toggleSeatSelection('G2', $event)">G2</td>
+                  <td class="couple" [class.booked]="bookedSeats.includes('G3')" data-seat="G3" colspan="2" (click)="toggleSeatSelection('G3', $event)">G3</td>
+                  <td class="couple" [class.booked]="bookedSeats.includes('G4')" data-seat="G4" colspan="2" (click)="toggleSeatSelection('G4', $event)">G4</td>
+                  <td class="couple" [class.booked]="bookedSeats.includes('G5')" data-seat="G5" colspan="2" (click)="toggleSeatSelection('G5', $event)">G5</td>
+                  <td class="couple" [class.booked]="bookedSeats.includes('G6')" data-seat="G6" colspan="2" (click)="toggleSeatSelection('G6', $event)">G6</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Chú thích trạng thái ghế -->
+            <div class="seat-legend" style="margin-top: 20px; text-align: center;">
+              <span class="legend-item">
+                <span class="seat-sample available"></span> Ghế trống
+              </span>
+              <span class="legend-item">
+                <span class="seat-sample selected"></span> Ghế đang chọn
+              </span>
+              <span class="legend-item">
+                <span class="seat-sample booked"></span> Ghế đã đặt
+              </span>
+              <div class="legend-box couple"></div>
+              <span>Ghế couple</span>
+            </div>
+            
+          </div>
+
+          <!-- Thông tin đặt vé bên phải -->
+          <div class="booking-info">
+            <h3>Thông tin đặt vé</h3>
+            <div class="selected-seats">
+              <p><strong>Ghế đã chọn:</strong> {{ selectedSeats.join(', ') || 'Chưa chọn ghế' }}</p>
+              <p><strong>Số lượng:</strong> {{ selectedSeats.length }} ghế</p>
+              <p><strong>Tổng tiền:</strong> {{ totalPrice | number }} VNĐ</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Buttons at bottom -->
+        <div class="button-group">
+          <button class="btn-change-showtime">
+            <a class="nav-link" [routerLink]="['/schedule',phimId]" >
+              Đổi suất chiếu
+              </a>
+            </button>
+          <div #paypalButtons id="paypal-buttons"></div>
+          <button hidden class="btn-continue" [disabled]="selectedSeats.length === 0">Tiếp tục</button>
+        </div>

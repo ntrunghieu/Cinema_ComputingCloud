@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="confirmation-container" style="margin-top: 50px;">
+  <div class="confirmation-card">
+    <div class="success-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+    <h2>Đặt vé thành công!</h2>
+    <div class="booking-details">
+      <p><strong>Mã đơn hàng:</strong> {{orderId}}</p>
+      <p><strong>Ghế đã đặt:</strong> {{seats.join(', ')}}</p>
+      <p><strong>Tổng tiền:</strong> {{formatCurrency(amount)}}</p>
+    </div>
+    <div hidden class="qr-code">
+      <!-- Placeholder for QR code -->
+      <img src="assets/qr-placeholder.png" alt="QR Code">
+    </div>
+    <p class="note">Vui lòng lưu lại mã đơn hàng hoặc chụp màn hình QR code để đổi vé tại quầy.</p>
+    <div class="action-buttons">
+      <button routerLink="" class="btn-home">
+        <a routerLink="/">Về trang chủ</a>
+      
+      </button>
+      <!-- <button (click)="window.print()" class="btn-print">In vé</button> -->
+    </div>
+  </div>
+</div>
