@@ -2,6 +2,7 @@
 FROM openjdk:21 AS build
 WORKDIR /app
 COPY BACKEND .
+RUN apt-get update && apt-get install -y xargs
 RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
