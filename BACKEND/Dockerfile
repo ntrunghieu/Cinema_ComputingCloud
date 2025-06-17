@@ -1,8 +1,10 @@
 # Build stage
 FROM openjdk:21 AS build
 WORKDIR /app
-COPY . .
+COPY BACKEND .
+RUN chmod +x gradlew
 RUN ./gradlew build -x test
+
 
 # Run stage
 FROM openjdk:21-jdk-slim
