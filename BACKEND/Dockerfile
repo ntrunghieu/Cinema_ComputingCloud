@@ -1,5 +1,5 @@
 # Build stage
-FROM openjdk:21 AS build
+FROM openjdk:21-slim AS build
 WORKDIR /app
 COPY BACKEND .
 RUN apt-get update && apt-get install -y xargs
