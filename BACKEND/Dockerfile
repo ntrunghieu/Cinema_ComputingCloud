@@ -2,7 +2,7 @@
 FROM openjdk:21-slim AS build
 WORKDIR /app
 COPY BACKEND .
-RUN apt-get update && apt-get install -y xargs
+RUN apt-get update && apt-get install -y findutils
 RUN chmod +x gradlew
 RUN ./gradlew build -x test
 
